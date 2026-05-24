@@ -498,7 +498,7 @@
       refreshAllSelects();
       if ($("#activitiesList").children.length === 0) addActivityRow();
       updateProgress();
-      autoLoadMasters();
+      // autoLoadMasters(); // Comentado para evitar dependencias de archivos externos (.xlsx / .csv)
       setInterval(saveDraftSilently, 30000);
     }
 
@@ -1273,20 +1273,11 @@
         { id_recurso: "EQ-006", descripcion: "Herramientas Manuales (Kit de Construcción)", tipo: "equipo", unidad: "GLB" }
       ];
 
-      const hasEdt = Array.isArray(state.masters.edt) && state.masters.edt.some(r => Number(r.nivel_wbs) === 2);
-      const hasPv = Array.isArray(state.masters.pv) && state.masters.pv.length > 0;
-      const hasRrhh = Array.isArray(state.masters.rrhh) && state.masters.rrhh.length > 0;
-      const hasAlmacen = Array.isArray(state.masters.almacen) && state.masters.almacen.length > 0;
-
-      let modified = false;
-      if (!hasEdt) { state.masters.edt = defaultEdt; modified = true; }
-      if (!hasPv) { state.masters.pv = defaultPv; modified = true; }
-      if (!hasRrhh) { state.masters.rrhh = defaultRrhh; modified = true; }
-      if (!hasAlmacen) { state.masters.almacen = defaultAlmacen; modified = true; }
-
-      if (modified) {
-        saveMastersToStorage();
-      }
+      state.masters.edt = defaultEdt;
+      state.masters.pv = defaultPv;
+      state.masters.rrhh = defaultRrhh;
+      state.masters.almacen = defaultAlmacen;
+      saveMastersToStorage();
     }
 
     function saveResponsible(name) {
