@@ -489,6 +489,7 @@
       $("#projectName").textContent = CONFIG.PROJECT_NAME;
       $("#fecha").valueAsDate = new Date();
       loadMastersFromStorage();
+      initializeDefaultMasters();
       setReportType("production");
       loadDraft();
       renderResponsibleHistory();
@@ -1193,6 +1194,98 @@
         } catch (error) {
           localStorage.removeItem(STORAGE_KEYS[key]);
         }
+      }
+    }
+
+    function initializeDefaultMasters() {
+      const todayStr = toDateInputValue(new Date());
+      const yesterdayStr = toDateInputValue(new Date(Date.now() - 86400000));
+      const tomorrowStr = toDateInputValue(new Date(Date.now() + 86400000));
+
+      const defaultEdt = [
+        { nivel_wbs: 1, id_wbs: "1.0", nombre_actividad: "Obras Provisionales y Trabajos Preliminares" },
+        { nivel_wbs: 2, id_wbs: "1.1", nombre_actividad: "Limpieza Terreno Manual", unidad: "M2", presupuesto_total: 5000, padre_id: "1.0" },
+        { nivel_wbs: 2, id_wbs: "1.2", nombre_actividad: "Trazo, Niveles y Replanteo", unidad: "M2", presupuesto_total: 12000, padre_id: "1.0" },
+        { nivel_wbs: 1, id_wbs: "2.0", nombre_actividad: "Movimiento de Tierras (Estructuras)" },
+        { nivel_wbs: 2, id_wbs: "2.1", nombre_actividad: "Excavación Masiva con Maquinaria", unidad: "M3", presupuesto_total: 45000, padre_id: "2.0" },
+        { nivel_wbs: 2, id_wbs: "2.2", nombre_actividad: "Relleno Compactado con Material Propio", unidad: "M3", presupuesto_total: 25000, padre_id: "2.0" },
+        { nivel_wbs: 1, id_wbs: "3.0", nombre_actividad: "Obras de Concreto Armado (Estructuras)" },
+        { nivel_wbs: 2, id_wbs: "3.1", nombre_actividad: "Concreto Premezclado f'c=210 kg/cm2", unidad: "M3", presupuesto_total: 85000, padre_id: "3.0" },
+        { nivel_wbs: 2, id_wbs: "3.2", nombre_actividad: "Encofrado y Desencofrado de Columnas", unidad: "M2", presupuesto_total: 35000, padre_id: "3.0" },
+        { nivel_wbs: 2, id_wbs: "3.3", nombre_actividad: "Acero de Refuerzo FY=4200 kg/cm2", unidad: "KG", presupuesto_total: 62000, padre_id: "3.0" },
+        { nivel_wbs: 1, id_wbs: "4.0", nombre_actividad: "Arquitectura y Acabados" },
+        { nivel_wbs: 2, id_wbs: "4.1", nombre_actividad: "Muro de Ladrillo K.K. de Arcilla", unidad: "M2", presupuesto_total: 40000, padre_id: "4.0" },
+        { nivel_wbs: 2, id_wbs: "4.2", nombre_actividad: "Tarrajeo Frotachado en Interiores", unidad: "M2", presupuesto_total: 28000, padre_id: "4.0" }
+      ];
+
+      const defaultPv = [
+        { id_wbs: "1.1", fecha: yesterdayStr, metrado_diario_planificado: 80, metrado_acumulado_planificado: 160 },
+        { id_wbs: "1.1", fecha: todayStr, metrado_diario_planificado: 100, metrado_acumulado_planificado: 260 },
+        { id_wbs: "1.1", fecha: tomorrowStr, metrado_diario_planificado: 50, metrado_acumulado_planificado: 310 },
+        { id_wbs: "1.2", fecha: yesterdayStr, metrado_diario_planificado: 150, metrado_acumulado_planificado: 300 },
+        { id_wbs: "1.2", fecha: todayStr, metrado_diario_planificado: 120, metrado_acumulado_planificado: 420 },
+        { id_wbs: "1.2", fecha: tomorrowStr, metrado_diario_planificado: 100, metrado_acumulado_planificado: 520 },
+        { id_wbs: "2.1", fecha: yesterdayStr, metrado_diario_planificado: 40, metrado_acumulado_planificado: 120 },
+        { id_wbs: "2.1", fecha: todayStr, metrado_diario_planificado: 60, metrado_acumulado_planificado: 180 },
+        { id_wbs: "2.1", fecha: tomorrowStr, metrado_diario_planificado: 60, metrado_acumulado_planificado: 240 },
+        { id_wbs: "2.2", fecha: yesterdayStr, metrado_diario_planificado: 15, metrado_acumulado_planificado: 30 },
+        { id_wbs: "2.2", fecha: todayStr, metrado_diario_planificado: 20, metrado_acumulado_planificado: 50 },
+        { id_wbs: "2.2", fecha: tomorrowStr, metrado_diario_planificado: 25, metrado_acumulado_planificado: 75 },
+        { id_wbs: "3.1", fecha: yesterdayStr, metrado_diario_planificado: 10, metrado_acumulado_planificado: 30 },
+        { id_wbs: "3.1", fecha: todayStr, metrado_diario_planificado: 15, metrado_acumulado_planificado: 45 },
+        { id_wbs: "3.1", fecha: tomorrowStr, metrado_diario_planificado: 15, metrado_acumulado_planificado: 60 },
+        { id_wbs: "3.2", fecha: yesterdayStr, metrado_diario_planificado: 30, metrado_acumulado_planificado: 70 },
+        { id_wbs: "3.2", fecha: todayStr, metrado_diario_planificado: 35, metrado_acumulado_planificado: 105 },
+        { id_wbs: "3.2", fecha: tomorrowStr, metrado_diario_planificado: 40, metrado_acumulado_planificado: 145 },
+        { id_wbs: "3.3", fecha: yesterdayStr, metrado_diario_planificado: 400, metrado_acumulado_planificado: 1000 },
+        { id_wbs: "3.3", fecha: todayStr, metrado_diario_planificado: 500, metrado_acumulado_planificado: 1500 },
+        { id_wbs: "3.3", fecha: tomorrowStr, metrado_diario_planificado: 500, metrado_acumulado_planificado: 2000 },
+        { id_wbs: "4.1", fecha: yesterdayStr, metrado_diario_planificado: 20, metrado_acumulado_planificado: 50 },
+        { id_wbs: "4.1", fecha: todayStr, metrado_diario_planificado: 25, metrado_acumulado_planificado: 75 },
+        { id_wbs: "4.1", fecha: tomorrowStr, metrado_diario_planificado: 30, metrado_acumulado_planificado: 105 },
+        { id_wbs: "4.2", fecha: yesterdayStr, metrado_diario_planificado: 25, metrado_acumulado_planificado: 60 },
+        { id_wbs: "4.2", fecha: todayStr, metrado_diario_planificado: 30, metrado_acumulado_planificado: 90 },
+        { id_wbs: "4.2", fecha: tomorrowStr, metrado_diario_planificado: 35, metrado_acumulado_planificado: 125 }
+      ];
+
+      const defaultRrhh = [
+        { id_recurso: "PE-001", descripcion: "Operario de Construcción Civil", categoria: "Mano de Obra Calificada", unidad: "H-H" },
+        { id_recurso: "PE-002", descripcion: "Oficial de Construcción Civil", categoria: "Mano de Obra Semi-Calificada", unidad: "H-H" },
+        { id_recurso: "PE-003", descripcion: "Peón de Construcción Civil", categoria: "Mano de Obra No Calificada", unidad: "H-H" },
+        { id_recurso: "PE-004", descripcion: "Topógrafo", categoria: "Mano de Obra Calificada", unidad: "H-H" },
+        { id_recurso: "PE-005", descripcion: "Operador de Maquinaria Pesada", categoria: "Mano de Obra Calificada", unidad: "H-H" },
+        { id_recurso: "PE-006", descripcion: "Prevencionista de Riesgos (HSE)", categoria: "Staff Técnico", unidad: "H-H" }
+      ];
+
+      const defaultAlmacen = [
+        { id_recurso: "MAT-001", descripcion: "Cemento Portland Tipo I", tipo: "material", unidad: "Bolsa" },
+        { id_recurso: "MAT-002", descripcion: "Arena Gruesa para Mezcla", tipo: "material", unidad: "M3" },
+        { id_recurso: "MAT-003", descripcion: "Piedra Chancada de 1/2 pulgada", tipo: "material", unidad: "M3" },
+        { id_recurso: "MAT-004", descripcion: "Acero Corrugado Grado 60 1/2\"", tipo: "material", unidad: "Varilla" },
+        { id_recurso: "MAT-005", descripcion: "Madera para Encofrado (Tornillo)", tipo: "material", unidad: "P2" },
+        { id_recurso: "MAT-006", descripcion: "Ladrillo King Kong 18 Huecos", tipo: "material", unidad: "Millar" },
+        { id_recurso: "MAT-007", descripcion: "Agua Potable para Mezcla", tipo: "material", unidad: "M3" },
+        { id_recurso: "EQ-001", descripcion: "Excavadora sobre Orugas CAT 320", tipo: "equipo", unidad: "H-M" },
+        { id_recurso: "EQ-002", descripcion: "Volquete 15 m3 Volvo FMX", tipo: "equipo", unidad: "H-M" },
+        { id_recurso: "EQ-003", descripcion: "Mezcladora de Concreto Trompo 9 HP", tipo: "equipo", unidad: "H-M" },
+        { id_recurso: "EQ-004", descripcion: "Vibrador de Concreto a Gasolina", tipo: "equipo", unidad: "H-M" },
+        { id_recurso: "EQ-005", descripcion: "Estación Total Topográfica Trimble", tipo: "equipo", unidad: "H-M" },
+        { id_recurso: "EQ-006", descripcion: "Herramientas Manuales (Kit de Construcción)", tipo: "equipo", unidad: "GLB" }
+      ];
+
+      const hasEdt = Array.isArray(state.masters.edt) && state.masters.edt.some(r => Number(r.nivel_wbs) === 2);
+      const hasPv = Array.isArray(state.masters.pv) && state.masters.pv.length > 0;
+      const hasRrhh = Array.isArray(state.masters.rrhh) && state.masters.rrhh.length > 0;
+      const hasAlmacen = Array.isArray(state.masters.almacen) && state.masters.almacen.length > 0;
+
+      let modified = false;
+      if (!hasEdt) { state.masters.edt = defaultEdt; modified = true; }
+      if (!hasPv) { state.masters.pv = defaultPv; modified = true; }
+      if (!hasRrhh) { state.masters.rrhh = defaultRrhh; modified = true; }
+      if (!hasAlmacen) { state.masters.almacen = defaultAlmacen; modified = true; }
+
+      if (modified) {
+        saveMastersToStorage();
       }
     }
 
